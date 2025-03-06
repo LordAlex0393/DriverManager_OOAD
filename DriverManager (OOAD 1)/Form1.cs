@@ -13,8 +13,8 @@ namespace DriverManager__OOAD_1_
             InitializeComponent();
 
             listViewPairs.View = View.Details;
-            listViewPairs.Columns.Add("Водитель", 150);
-            listViewPairs.Columns.Add("Транспорт", 150);
+            listViewPairs.Columns.Add("Водитель", 125);
+            listViewPairs.Columns.Add("Транспорт", 125);
 
             foreach (LicenseType license in Enum.GetValues(typeof(LicenseType)))
             {
