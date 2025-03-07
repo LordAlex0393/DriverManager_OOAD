@@ -127,24 +127,64 @@ namespace DriverManager__OOAD_1_
             }
         }
 
+        // Easy logic
+        //public void AutoAssignDriversToTransports()
+        //{
+        //    foreach (var driver in drivers)
+        //    {
+        //        if (driver.isBusy) continue; // Пропускаем занятых водителей
+
+        //        foreach (var transport in transports)
+        //        {
+        //            if (transport.isBusy) continue; // Пропускаем занятый транспорт
+
+        //            // Проверяем соответствие категорий прав и типа транспорта
+        //            if ((driver.RequiredLicenses.Contains(LicenseType.B) && transport is Car ||
+        //                (driver.RequiredLicenses.Contains(LicenseType.D) && transport is Bus ||
+        //                (driver.RequiredLicenses.Contains(LicenseType.T) && (transport is Tram || transport is Trolleybus)))))
+        //            {
+        //                AssignTransportToDriver(driver, transport);
+        //                break; // Переходим к следующему водителю
+        //            }
+        //        }
+        //    }
+        //}
         public void AutoAssignDriversToTransports()
         {
+            // Очищаем текущие назначения
             foreach (var driver in drivers)
             {
-                if (driver.isBusy) continue; // Пропускаем занятых водителей
-
-                foreach (var transport in transports)
+                if (driver.isBusy)
                 {
-                    if (transport.isBusy) continue; // Пропускаем занятый транспорт
+                    UnassignTransportFromDriver(driver);
+                }
+            }
 
-                    // Проверяем соответствие категорий прав и типа транспорта
-                    if ((driver.RequiredLicenses.Contains(LicenseType.B) && transport is Car ||
-                        (driver.RequiredLicenses.Contains(LicenseType.D) && transport is Bus ||
-                        (driver.RequiredLicenses.Contains(LicenseType.T) && (transport is Tram || transport is Trolleybus)))))
-                    {
-                        AssignTransportToDriver(driver, transport);
-                        break; // Переходим к следующему водителю
-                    }
+            // Создаем список доступных водителей и транспорта
+            var availableDrivers = drivers.Where(d => !d.isBusy).ToList();
+            var availableTransports = transports.Where(t => !t.isBusy).ToList();
+
+            // Сортируем водителей по количеству категорий прав (от меньшего к большему)
+            var sortedDrivers = availableDrivers.OrderBy(d => d.RequiredLicenses.Count).ToList();
+
+            foreach (var driver in sortedDrivers)
+            {
+                // Находим все доступные транспортные средства, которые водитель может водить
+                var suitableTransports = availableTransports
+                    .Where(t => (driver.RequiredLicenses.Contains(LicenseType.B) && t is Car ||
+                                (driver.RequiredLicenses.Contains(LicenseType.D) && t is Bus ||
+                                (driver.RequiredLicenses.Contains(LicenseType.T) && (t is Tram || t is Trolleybus)))))
+                    .ToList();
+
+                if (suitableTransports.Any())
+                {
+                    // Выбираем первый подходящий транспорт
+                    var transport = suitableTransports.First();
+                    AssignTransportToDriver(driver, transport);
+
+                    // Удаляем назначенные водителя и транспорт из списков доступных
+                    availableDrivers.Remove(driver);
+                    availableTransports.Remove(transport);
                 }
             }
         }

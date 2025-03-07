@@ -24,7 +24,6 @@ namespace DriverManager__OOAD_1_
             get { return capacity; }
             set { capacity = value; }
         }
-
         public abstract void Move(Location location);
     }
 }

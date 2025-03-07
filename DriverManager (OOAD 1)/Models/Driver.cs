@@ -13,27 +13,25 @@ namespace DriverManager__OOAD_1_
         private List<LicenseType> requiredLicenses;
         public bool isBusy;
 
+        public Driver(string name, List<LicenseType> requiredLicenses)
+        {
+            Name = name;
+            RequiredLicenses = requiredLicenses;
+        }
+
         public string Name
         {
             get { return name; }
             set { name = value; }
         }
-
-        public void Drive(Location location)
-        {
-            // Реализация движения водителя
-        }
-
         public List<LicenseType> RequiredLicenses
         {
             get { return requiredLicenses; }
             set { requiredLicenses = value; }
         }
-
-        public Driver(string name, List<LicenseType> requiredLicenses)
+        public void Drive(Location location)
         {
-            Name = name;
-            RequiredLicenses = requiredLicenses;
+            //Логика метода Drive
         }
     }
 }

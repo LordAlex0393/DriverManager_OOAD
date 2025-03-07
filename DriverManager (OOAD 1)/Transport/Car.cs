@@ -15,7 +15,7 @@ namespace DriverManager__OOAD_1_.Transport
         }
         public override void Move(Location location)
         {
-            // Реализация движения автомобиля
+            //Логика метода Move
         }
     }
 }
